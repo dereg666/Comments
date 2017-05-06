@@ -8,9 +8,12 @@ class BoardApp extends Component {
     this.state = {
       comments: [],
       addCommentHolder: 'Type to add a comment',
-      addValue: '',
+      addCommentValue: '',
+      addCommentUser: '',
     };
     this.handleChange = this.handleChange.bind(this);
+    this.textBlur = this.textBlur.bind(this);
+    this.textFocus = this.textFocus.bind(this);
   }
   // componentDidMount() {
   //   fetch('/api')
@@ -22,9 +25,11 @@ class BoardApp extends Component {
   //     });
   // }
   handleCommentChange(event, section) {
-    const tempValue = this.state.addValue;
-    tempValue[section] = event.target.value;
-    this.setState({ addValue: tempValue });
+    if (section === 0) {
+      this.setState({ addCommentUser: event.target.value });
+    } else if (section === 1) {
+      this.setState({ addCommentValue: event.target.value });
+    }
   }
   textFocus() {
     this.setState({ addCommentHolder: '' });
@@ -33,17 +38,17 @@ class BoardApp extends Component {
     this.setState({ addCommentHolder: 'Type to add a comment' });
   }
   submitFunction() {
-    if (this.state.addCommentValue) {
-      const addList = {
-        todoName: this.state.lists.length.toString() + ' ' + this.state.addListValue,
-        todoItems: [],
-      };
-      const temp = this.state.lists;
-      temp.push(addList);
-      this.setState({ showMode: (temp.length + 2) });
-      this.setState({ lists: temp });
-      this.setState({ addListValue: '' });
-    }
+    // if (this.state.addCommentValue) {
+    //   const addList = {
+    //     todoName: this.state.lists.length.toString() + ' ' + this.state.addListValue,
+    //     todoItems: [],
+    //   };
+    //   const temp = this.state.lists;
+    //   temp.push(addList);
+    //   this.setState({ showMode: (temp.length + 2) });
+    //   this.setState({ lists: temp });
+    //   this.setState({ addListValue: '' });
+    // }
   }
   render() {
     return (
