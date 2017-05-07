@@ -14,6 +14,7 @@ class BoardApp extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.textBlur = this.textBlur.bind(this);
     this.textFocus = this.textFocus.bind(this);
+    this.submitFunction = this.submitFunction.bind(this);
   }
   // componentDidMount() {
   //   fetch('/api')
@@ -38,17 +39,18 @@ class BoardApp extends Component {
     this.setState({ addCommentHolder: 'Type to add a comment' });
   }
   submitFunction() {
-    // if (this.state.addCommentValue) {
-    //   const addList = {
-    //     todoName: this.state.lists.length.toString() + ' ' + this.state.addListValue,
-    //     todoItems: [],
-    //   };
-    //   const temp = this.state.lists;
-    //   temp.push(addList);
-    //   this.setState({ showMode: (temp.length + 2) });
-    //   this.setState({ lists: temp });
-    //   this.setState({ addListValue: '' });
-    // }
+    if (this.state.addCommentValue) {
+      const addComment = {
+        Name: this.state.addCommentUser ? this.state.addCommentUser : 'Anonymous',
+        Value: this.state.addCommentValue,
+        Time: Date.now(),
+      };
+      const temp = this.state.comments;
+      temp.push(addComment);
+      this.setState({ comments: temp });
+      this.setState({ addCommentUser: '' });
+      this.setState({ addCommentValue: '' });
+    }
   }
   render() {
     return (
@@ -58,10 +60,25 @@ class BoardApp extends Component {
         </div>
         <div className="App">
           <div className="InputBox">
-            <input />
+            <input
+              type="text"
+              value={this.state.addCommentUser}
+              placeholder={this.state.addCommentHolder}
+              onChange={this.handleCommentChange}
+              onFocus={this.textFocus}
+              onBlur={this.textBlur}
+            />
+            <input
+              type="text"
+              value={this.state.addCommentUser}
+              onChange={this.handleCommentChange}
+              />
           </div>
           <div className="Comments">
-            {this.state.comments.map(c => <CommentSection />)}
+            {this.state.comments.map(c => <CommentSection
+              userName={c.Name}
+              commentValue={c.Value}
+            />)}
           </div>
         </div>
       </div>
