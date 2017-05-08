@@ -46,7 +46,6 @@ class BoardApp extends Component {
       const addComment = {
         Name: this.state.addCommentUser ? this.state.addCommentUser : 'Anonymous',
         Value: this.state.addCommentValue,
-        Time: Date.now(),
       };
       const temp = this.state.comments;
       fetch('/api/posting', {
@@ -57,7 +56,8 @@ class BoardApp extends Component {
         },
         body: JSON.stringify(addComment),
       }).then((res) => {
-        if (res.ok) {
+        if (Number.isInteger(res.json())) {
+          addComment.Time = res.json();
           temp.push(addComment);
           this.setState({ comments: temp });
           this.setState({ addCommentUser: '' });

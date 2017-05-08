@@ -2,9 +2,11 @@ const express = require('express');
 const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
+const Datastore = require('nedb');
 
 
 const app = express();
+
 
 const data = [
   {
@@ -35,10 +37,12 @@ app.get('/api/loading', (req, res) => {
 });
 
 app.post('/api/posting', (req, res) => {
-  console.log(req.body);
-  data.push(req.body);
-  console.log('done');
-  res.sendStatus(200);
+  const temp = req.body;
+  temp.Time = Date.now();
+  console.log(temp);
+  data.push(temp);
+  res.json(temp.Time);
+  // res.sendStatus(200);
 });
 
 module.exports = app;
