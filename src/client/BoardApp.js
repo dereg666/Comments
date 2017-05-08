@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import CommentSection from './CommentSection';
 
-
-
 class BoardApp extends Component {
   constructor() {
     super();
@@ -51,25 +49,25 @@ class BoardApp extends Component {
         Time: Date.now(),
       };
       const temp = this.state.comments;
-      fetch ('/api/posting', {
+      fetch('/api/posting', {
         method: 'post',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(temp);
-      }).then(res => {
+        body: JSON.stringify(addComment),
+      }).then((res) => {
         if (res.ok) {
           temp.push(addComment);
           this.setState({ comments: temp });
           this.setState({ addCommentUser: '' });
           this.setState({ addCommentValue: '' });
         } else {
-          let err = new Error(res.statusText);
+          const err = new Error(res.statusText);
           err.response = res;
           throw err;
         }
-      }).catch(err => {
+      }).catch((err) => {
         console.error(err);
         this.update();
       });

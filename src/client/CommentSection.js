@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 const showDate = (ms) => {
   const past = new Date(ms);
-  const now = new Date();
-  if (now.getSeconds() - past.getSeconds() < 60) {
-    return 'Just now';
-  } else if (now.getMinutes() - past.getMinutes() < 60) {
-    return (now.getMinutes() - past.getMinutes()).toString() + ' mins';
-  } else if (now.getHours() - past.getHours() < 24) {
-    return (now.getHours() - past.getHours()).toString() + ' hrs';
-  }
+  // const now = new Date();
+  // console.log(ms);
+  // if (now.getSeconds() - past.getSeconds() < 60) {
+  //   return 'Just now';
+  // } else if (now.getMinutes() - past.getMinutes() < 60) {
+  //   return (now.getMinutes() - past.getMinutes()).toString() + ' mins';
+  // } else if (now.getHours() - past.getHours() < 24) {
+  //   return (now.getHours() - past.getHours()).toString() + ' hrs';
+  // }
   return past.toLocaleDateString() + ' at ' + past.toLocaleTimeString();
 };
 
