@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CommentSection from './CommentSection';
 
 
+
 class BoardApp extends Component {
   constructor() {
     super();
@@ -11,20 +12,24 @@ class BoardApp extends Component {
       addCommentValue: '',
       addCommentUser: '',
     };
-    this.handleChange = this.handleChange.bind(this);
+    this.handleCommentChange = this.handleCommentChange.bind(this);
     this.textBlur = this.textBlur.bind(this);
     this.textFocus = this.textFocus.bind(this);
     this.submitFunction = this.submitFunction.bind(this);
+    this.update = this.update.bind(this);
   }
-  // componentDidMount() {
-  //   fetch('/api')
-  //     .then(response => response.json())
-  //     .then((data) => {
-  //       this.setState({ comments: data });
-  //     }).catch((error) => {
-  //       console.log('request failed', error);
-  //     });
-  // }
+  componentDidMount() {
+    this.update();
+  }
+  update() {
+    fetch('/api/loading')
+      .then(response => response.json())
+      .then((data) => {
+        this.setState({ comments: data });
+      }).catch((error) => {
+        console.log('request failed', error);
+      });
+  }
   handleCommentChange(event, section) {
     if (section === 0) {
       this.setState({ addCommentUser: event.target.value });
@@ -46,10 +51,28 @@ class BoardApp extends Component {
         Time: Date.now(),
       };
       const temp = this.state.comments;
-      temp.push(addComment);
-      this.setState({ comments: temp });
-      this.setState({ addCommentUser: '' });
-      this.setState({ addCommentValue: '' });
+      fetch ('/api/posting', {
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(temp);
+      }).then(res => {
+        if (res.ok) {
+          temp.push(addComment);
+          this.setState({ comments: temp });
+          this.setState({ addCommentUser: '' });
+          this.setState({ addCommentValue: '' });
+        } else {
+          let err = new Error(res.statusText);
+          err.response = res;
+          throw err;
+        }
+      }).catch(err => {
+        console.error(err);
+        this.update();
+      });
     }
   }
   render() {
@@ -63,23 +86,30 @@ class BoardApp extends Component {
             <input
               type="text"
               value={this.state.addCommentUser}
+              onChange={e => this.handleCommentChange(e, 0)}
+            />
+            <input
+              type="text"
+              value={this.state.addCommentValue}
               placeholder={this.state.addCommentHolder}
-              onChange={this.handleCommentChange}
+              onChange={e => this.handleCommentChange(e, 1)}
               onFocus={this.textFocus}
               onBlur={this.textBlur}
             />
             <input
-              type="text"
-              value={this.state.addCommentUser}
-              onChange={this.handleCommentChange}
-              />
+              type="submit"
+              value="Save"
+              onClick={this.submitFunction}
+            />
           </div>
           <div className="Comments">
             {this.state.comments.map(c => <CommentSection
               userName={c.Name}
               commentValue={c.Value}
+              postTime={c.Time}
             />)}
           </div>
+          <div>end</div>
         </div>
       </div>
     );
