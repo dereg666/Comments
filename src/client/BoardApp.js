@@ -55,22 +55,23 @@ class BoardApp extends Component {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(addComment),
-      }).then((res) => {
-        if (Number.isInteger(res.json())) {
-          addComment.Time = res.json();
-          temp.push(addComment);
-          this.setState({ comments: temp });
-          this.setState({ addCommentUser: '' });
-          this.setState({ addCommentValue: '' });
-        } else {
-          const err = new Error(res.statusText);
-          err.response = res;
-          throw err;
-        }
-      }).catch((err) => {
-        console.error(err);
-        this.update();
-      });
+      }).then(response => response.json())
+        .then((res) => {
+          if (Number.isInteger(res)) {
+            addComment.Time = res;
+            temp.push(addComment);
+            this.setState({ comments: temp });
+            this.setState({ addCommentUser: '' });
+            this.setState({ addCommentValue: '' });
+          } else {
+            const err = new Error(res.statusText);
+            err.response = res;
+            throw err;
+          }
+        }).catch((err) => {
+          console.error(err);
+          this.update();
+        });
     }
   }
   render() {
