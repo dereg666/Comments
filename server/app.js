@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 app.get('/api/loading', (req, res) => {
   // res.json(data);
-  db.find({}).sort({ Time: 1 }).exec(function (err, docs) {
+  db.find({}).sort({ Time: 1 }).exec((err, docs) => {
     const x = docs;
     res.json(x);
   });
@@ -37,7 +37,7 @@ app.post('/api/posting', (req, res) => {
   console.log(temp);
   // data.push(temp);
   res.json(temp.Time);
-  db.insert(temp, function (err) {   // Callback is optional
+  db.insert(temp, () => {   // Callback is optional
   // newDoc is the newly inserted document, including its _id
   // newDoc has no key called notToBeSaved since its value was undefined
   });
