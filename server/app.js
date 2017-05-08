@@ -7,19 +7,10 @@ const Datastore = require('nedb');
 
 const app = express();
 
-
-const data = [
-  {
-    Name: 'test123',
-    Value: 'hello how are you',
-    Time: 1494228496435,
-  },
-  {
-    Name: 'ah ha',
-    Value: 'Good afternoon',
-    Time: 1494228000000,
-  },
-];
+const db = new Datastore({
+  filename: './data/store.db',
+  autoload: true,
+});
 
 app.use(morgan(':remote-addr - :remote-user [:date[clf]] ":method :url HTTP/:http-version" :status :res[content-length] :response-time ms'));
 
@@ -33,15 +24,23 @@ app.get('/', (req, res) => {
 });
 
 app.get('/api/loading', (req, res) => {
-  res.json(data);
+  // res.json(data);
+  db.find({}).sort({ Time: 1 }).exec(function (err, docs) {
+    const x = docs;
+    res.json(x);
+  });
 });
 
 app.post('/api/posting', (req, res) => {
   const temp = req.body;
   temp.Time = Date.now();
   console.log(temp);
-  data.push(temp);
+  // data.push(temp);
   res.json(temp.Time);
+  db.insert(temp, function (err) {   // Callback is optional
+  // newDoc is the newly inserted document, including its _id
+  // newDoc has no key called notToBeSaved since its value was undefined
+  });
   // res.sendStatus(200);
 });
 
