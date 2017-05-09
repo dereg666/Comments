@@ -34,9 +34,13 @@ app.get('/api/loading', (req, res) => {
 app.post('/api/posting', (req, res) => {
   const temp = req.body;
   temp.Time = Date.now();
-  console.log(temp);
+  temp.ip = req.connection.remoteAddress.split(':')[3];
   // data.push(temp);
-  res.json(temp.Time);
+  res.json({
+    ok: 200,
+    Time: temp.Time,
+    ip: temp.ip,
+  });
   db.insert(temp, () => {   // Callback is optional
   // newDoc is the newly inserted document, including its _id
   // newDoc has no key called notToBeSaved since its value was undefined

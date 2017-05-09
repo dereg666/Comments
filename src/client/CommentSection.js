@@ -25,6 +25,7 @@ class CommentSection extends Component {
         <div>{this.props.userName}</div>
         <div>{this.props.commentValue}</div>
         <div>{showDate(this.props.postTime)}</div>
+        <div>{this.props.ip}</div>
         <br />
         <br />
       </div>
@@ -36,6 +37,7 @@ CommentSection.PropTypes = {
   userName: PropTypes.string.isRequired,
   commentValue: PropTypes.string.isRequired,
   postTime: PropTypes.number.isRequired,
+  ip: PropTypes.string.isRequired,
 };
 
 export default CommentSection;

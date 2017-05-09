@@ -57,8 +57,10 @@ class BoardApp extends Component {
         body: JSON.stringify(addComment),
       }).then(response => response.json())
         .then((res) => {
-          if (Number.isInteger(res)) {
-            addComment.Time = res;
+          console.log(res);
+          if (res.ok === 200) {
+            addComment.Time = res.Time;
+            addComment.ip = res.ip;
             temp.push(addComment);
             this.setState({ comments: temp });
             this.setState({ addCommentUser: '' });
@@ -106,6 +108,7 @@ class BoardApp extends Component {
               userName={c.Name}
               commentValue={c.Value}
               postTime={c.Time}
+              ip={c.ip}
             />)}
           </div>
           <div>end</div>
