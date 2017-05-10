@@ -36,14 +36,14 @@ class BoardApp extends Component {
       this.setState({ addCommentValue: event.target.value });
     }
   }
-  // clickEnter(event) {
-  //   if (event.keyCode === 13) {
-  //     let temp = this.state.addCommentValue;
-  //     event.preventDefault();
-  //     temp += '\n';
-  //     this.setState({ addCommentValue: temp });
-  //   }
-  // }
+  clickEnter(event) {
+    if (event.keyCode === 13) {
+      let temp = this.state.addCommentValue;
+      event.preventDefault();
+      temp += '\n';
+      this.setState({ addCommentValue: temp });
+    }
+  }
   textFocus() {
     this.setState({ addCommentHolder: '' });
   }
@@ -57,38 +57,38 @@ class BoardApp extends Component {
         Value: this.state.addCommentValue,
       };
       const temp = this.state.comments;
-      // fetch('/api/posting', {
-      //   method: 'post',
-      //   headers: {
-      //     Accept: 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: JSON.stringify(addComment),
-      // }).then(response => response.json())
-      //   .then((res) => {
-      //     console.log(res);
-      //     if (res.ok === 200) {
-      //       addComment.Time = res.Time;
-      //       addComment.ip = res.ip;
-      //       temp.push(addComment);
-      //       this.setState({ comments: temp });
-      //       this.setState({ addCommentUser: '' });
-      //       this.setState({ addCommentValue: '' });
-      //     } else {
-      //       const err = new Error(res.statusText);
-      //       err.response = res;
-      //       throw err;
-      //     }
-      //   }).catch((err) => {
-      //     console.error(err);
-      //     this.update();
-      //   });
-      addComment.Time = Date.now();
-      addComment.ip = '127.0.0.0';
-      temp.push(addComment);
-      this.setState({ comments: temp });
-      this.setState({ addCommentUser: '' });
-      this.setState({ addCommentValue: '' });
+      fetch('/api/posting', {
+        method: 'post',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addComment),
+      }).then(response => response.json())
+        .then((res) => {
+          console.log(res);
+          if (res.ok === 200) {
+            addComment.Time = res.Time;
+            addComment.ip = res.ip;
+            temp.push(addComment);
+            this.setState({ comments: temp });
+            this.setState({ addCommentUser: '' });
+            this.setState({ addCommentValue: '' });
+          } else {
+            const err = new Error(res.statusText);
+            err.response = res;
+            throw err;
+          }
+        }).catch((err) => {
+          console.error(err);
+          this.update();
+        });
+      // addComment.Time = Date.now();
+      // addComment.ip = '127.0.0.0';
+      // temp.push(addComment);
+      // this.setState({ comments: temp });
+      // this.setState({ addCommentUser: '' });
+      // this.setState({ addCommentValue: '' });
     }
   }
   render() {
