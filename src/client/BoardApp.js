@@ -21,13 +21,13 @@ class BoardApp extends Component {
     this.update();
   }
   update() {
-    // fetch('/api/loading')
-    //   .then(response => response.json())
-    //   .then((data) => {
-    //     this.setState({ comments: data });
-    //   }).catch((error) => {
-    //     console.log('request failed', error);
-    //   });
+    fetch('/api/loading')
+      .then(response => response.json())
+      .then((data) => {
+        this.setState({ comments: data });
+      }).catch((error) => {
+        console.log('request failed', error);
+      });
   }
   handleCommentChange(event, section) {
     if (section === 0) {
